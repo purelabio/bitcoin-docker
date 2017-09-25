@@ -1,0 +1,15 @@
+FROM ubuntu
+
+RUN apt-get update \
+    && apt-get install -y software-properties-common \
+    && add-apt-repository -y ppa:bitcoin/bitcoin \
+    && apt-get update \
+    && apt-get install -y bitcoind
+
+RUN mkdir /root/.bitcoin
+
+WORKDIR /root/.bitcoin
+
+ADD bitcoin.conf .
+
+CMD ["bitcoind"]

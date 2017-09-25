@@ -1,0 +1,45 @@
+version: '3.2'
+
+services:
+
+  node1:
+    build:
+      context: ./
+      dockerfile: Dockerfile-bitcoin
+    restart: on-failure
+    ports:
+      - 8342:8332
+      - 18333:18333
+    # volumes:
+    #   - /opt/bitcoin/node1:/root/.bitcoin
+
+  node2:
+    build:
+      context: ./
+      dockerfile: Dockerfile-bitcoin
+    restart: on-failure
+    ports:
+      - 8343:8332
+      - 18334:18333
+    depends_on:
+      - node1
+    # volumes:
+    #   - /opt/bitcoin/node2:/root/.bitcoin
+
+  # cpuminer:
+  #   build:
+  #     context: ./
+  #     dockerfile: Dockerfile-cpuminer
+  #   depends_on:
+  #     - node1
+  #     - node2
+  #   entrypoint: [
+  #     "./minerd",
+  #     "--url=http://node1:8332",
+  #     "--user=btc",
+  #     "--pass=btc",
+  #     "--coinbase-addr=mn8zfyUYh3BeJFSmPJEzMMxTvdbh7Qti3V",
+  #     "--no-getwork"
+  #   ]
+
+
